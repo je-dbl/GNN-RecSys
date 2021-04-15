@@ -1,8 +1,10 @@
 # GNN-RecSys
+*This project was presented in a [40min talk + Q&A available on Youtube](https://www.youtube.com/watch?v=hvTawbQnK_w) and in a [Medium blog post](https://medium.com/decathlondevelopers/building-a-recommender-system-using-graph-neural-networks-2ee5fc4e706d)*
 
 **Graph Neural Networks for Recommender Systems**\
 This repository contains code to train and test GNN models for recommendation, mainly using the Deep Graph Library
 ([DGL](https://docs.dgl.ai/)). 
+
 
 **What kind of recommendation?**\
 For example, an organisation might want to recommend items of interest to all users of its ecommerce platforms.
