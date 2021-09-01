@@ -12,16 +12,16 @@ from src.utils import read_data
 def format_dfs(
         train_path,  # str (path) or pd.Dataframe directly (df)
         test_path,  # str (path) or pd.Dataframe directly (df)
-        item_sport_path: str,
-        user_sport_path: str,
-        sport_sportg_path: str,
+        #item_sport_path: str,
+        #user_sport_path: str,
+        #sport_sportg_path: str,
         item_feat_path: str,
         user_feat_path: str,
-        sport_feat_path: str,
-        sport_onehot_path: str,
+        #sport_feat_path: str,
+        #sport_onehot_path: str,
         remove: float = 0.,
-        ctm_id_type: str = 'CUSTOMER IDENTIFIER',
-        item_id_type: str = 'SPECIFIC ITEM IDENTIFIER',
+        ctm_id_type: str = 'household_key',
+        item_id_type: str = 'CATEGORY',
         days_of_purchases: int = 710,
         days_of_clicks: int = 710,
         lifespan_of_items: int = 710,
