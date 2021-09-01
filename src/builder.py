@@ -76,8 +76,8 @@ def format_dfs(
     # User, item and sport features
     item_feat_df = read_data(item_feat_path)
     user_feat_df = read_data(user_feat_path)
-    sport_feat_df = read_data(sport_feat_path)
-    sport_onehot_df = read_data(sport_onehot_path)
+    #sport_feat_df = read_data(sport_feat_path)
+    #sport_onehot_df = read_data(sport_onehot_path)
 
     # User-item interaction. We allow direct df instead of path: check which was passed.
     if isinstance(train_path, str):
@@ -115,8 +115,8 @@ def format_dfs(
             (most_recent_date - timedelta(days=int(lifespan_of_items))),
             format='%Y-%m-%d'
         )
-        item_list = user_item_train[user_item_train.hit_date >= limit_date]['SPECIFIC ITEM IDENTIFIER'].unique()
-        user_item_train = user_item_train[user_item_train['SPECIFIC ITEM IDENTIFIER'].isin(item_list)]
+        item_list = user_item_train[user_item_train.hit_date >= limit_date]['CATEGORY'].unique()
+        user_item_train = user_item_train[user_item_train['CATEGORY'].isin(item_list)]
 
     if remove > 0:
         ctm_list = user_item_train[ctm_id_type].unique()
@@ -129,6 +129,7 @@ def format_dfs(
         # Make sure that if no observations were removed by days of clicks / purchases, no user is only in test set
         user_item_test = user_item_test[user_item_test[ctm_id_type].isin(user_item_train[ctm_id_type].unique())]
 
+'''    
     if item_id_type == 'GENERAL ITEM IDENTIFIER':
         user_item_train = user_item_train.merge(
             item_feat_df[['SPECIFIC ITEM IDENTIFIER', 'GENERAL ITEM IDENTIFIER']].drop_duplicates(),
@@ -140,9 +141,10 @@ def format_dfs(
             on='SPECIFIC ITEM IDENTIFIER')
         assert user_item_train.general_item_identifier.isna().sum() == 0
         assert user_item_test.general_item_identifier.isna().sum() == 0
-
+'''
 
     # Item-sport interaction
+'''
     item_sport_interaction = read_data(item_sport_path)
     if lifespan_of_items < days_of_purchases:
         item_sport_interaction = item_sport_interaction[item_sport_interaction['SPECIFIC ITEM IDENTIFIER'].isin(
@@ -163,30 +165,34 @@ def format_dfs(
 
     # Sport-sportgroups interaction
     sport_sportg_interaction = read_data(sport_sportg_path)
+'''
 
     if report_model_coverage:
         train_users = user_item_train[ctm_id_type].unique().tolist()
         test_users = user_item_test[ctm_id_type].unique().tolist()
-        sport_users = user_sport_interaction[ctm_id_type].unique().tolist()
+        #sport_users = user_sport_interaction[ctm_id_type].unique().tolist()
         unseen_users = [uid for uid in test_users if uid not in train_users]
         print(f'There are {len(unseen_users)} users with no interactions')
-        train_users.extend(sport_users)
-        unseen_users = [uid for uid in test_users if uid not in train_users]
-        print(f'and {len(unseen_users)} with also no sports associated')
+        #train_users.extend(sport_users)
+        #unseen_users = [uid for uid in test_users if uid not in train_users]
+        #print(f'and {len(unseen_users)} with also no sports associated')
         print(f'out of {len(test_users)}')
 
-    return user_item_train, user_item_test, item_sport_interaction, user_sport_interaction, \
-           sport_sportg_interaction, item_feat_df, user_feat_df, sport_feat_df, sport_onehot_df
+    #return user_item_train, user_item_test, item_sport_interaction, user_sport_interaction, \
+    #       sport_sportg_interaction, item_feat_df, user_feat_df, sport_feat_df, sport_onehot_df
+        
+    return user_item_train, user_item_test, item_feat_df, user_feat_df
 
 
 def create_ids(user_item_train: pd.DataFrame,
-               user_sport_interaction: pd.DataFrame,
-               sport_sportg_interaction: pd.DataFrame,
+               #user_sport_interaction: pd.DataFrame,
+               #sport_sportg_interaction: pd.DataFrame,
                item_feat_df,
-               item_id_type: str = 'SPECIFIC ITEM IDENTIFIER',
-               ctm_id_type: str = 'CUSTOMER IDENTIFIER',
-               spt_id_type: str = 'sport_id',
-               ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+               item_id_type: str = 'CATEGORY',
+               ctm_id_type: str = 'household_key',
+               #spt_id_type: str = 'sport_id',
+               #) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+               ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     Create ids needed for creating the graph (nodes cannot have arbitrary ids, i.e. it couldn't be directly
     the item identifier).
@@ -217,6 +223,7 @@ def create_ids(user_item_train: pd.DataFrame,
     pdt_id['pdt_new_id'] = pdt_id.index
 
     # Create sport ids
+'''        
     unique_sports = np.append(sport_sportg_interaction.sports_id.unique(),
                               sport_sportg_interaction.sportsgroup_id.unique())
     unique_sports = np.unique(np.append(unique_sports,
@@ -224,20 +231,21 @@ def create_ids(user_item_train: pd.DataFrame,
     spt_id = pd.DataFrame(unique_sports, columns=[spt_id_type])
     spt_id['spt_new_id'] = spt_id.index
 
-    return ctm_id, pdt_id, spt_id
-
+    #return ctm_id, pdt_id, spt_id
+    return ctm_id, pdt_id
+'''
 
 def df_to_adjacency_list(user_item_train: pd.DataFrame,
                          user_item_test: pd.DataFrame,
-                         item_sport_interaction: pd.DataFrame,
-                         user_sport_interaction: pd.DataFrame,
-                         sport_sportg_interaction: pd.DataFrame,
+                         #item_sport_interaction: pd.DataFrame,
+                         #user_sport_interaction: pd.DataFrame,
+                         #sport_sportg_interaction: pd.DataFrame,
                          ctm_id: pd.DataFrame,
                          pdt_id: pd.DataFrame,
-                         spt_id: pd.DataFrame,
+                         #spt_id: pd.DataFrame,
                          item_id_type: str,
                          ctm_id_type: str,
-                         spt_id_type: str,
+                         #spt_id_type: str,
                          discern_clicks: bool = False,
                          duplicates: str = 'keep_all'
                          ):
@@ -271,7 +279,7 @@ def df_to_adjacency_list(user_item_train: pd.DataFrame,
     user_item_train = user_item_train.merge(pdt_id,
                                             how='left',
                                             on=item_id_type)
-
+# Это не трогаю, все равно не используется
     if duplicates in ['keep_last', 'count_occurrence']:
         grouped_df = user_item_train.groupby(['buy', 'ctm_new_id', 'pdt_new_id']).specific_item_identifier.count()
         grouped_df = pd.DataFrame(grouped_df).reset_index()
@@ -335,6 +343,7 @@ def df_to_adjacency_list(user_item_train: pd.DataFrame,
     ground_truth_test = (test_src, test_dst)
 
     # Item sport : merge new ids with old ids
+'''
     item_sport_interaction = item_sport_interaction.merge(spt_id,
                                                           how='left',
                                                           on=spt_id_type)
@@ -370,7 +379,7 @@ def df_to_adjacency_list(user_item_train: pd.DataFrame,
 
     adjacency_dict['sport_sportg_src'] = sport_sportg_interaction.spt_new_id_x.values
     adjacency_dict['sport_sportg_dst'] = sport_sportg_interaction.spt_new_id_y.values
-
+'''
     return adjacency_dict, ground_truth_test, ground_truth_purchase_test, user_item_train
 
 
@@ -386,16 +395,16 @@ def create_graph(graph_schema,
 def import_features(g: dgl.DGLHeteroGraph,
                     user_feat_df,
                     item_feat_df,
-                    sport_onehot_df,
+                    #sport_onehot_df,
                     ctm_id: pd.DataFrame,
                     pdt_id: pd.DataFrame,
-                    spt_id: pd.DataFrame,
+                    #spt_id: pd.DataFrame,
                     user_item_train,
                     get_popularity: bool,
                     num_days_pop: int,
                     item_id_type: str,
                     ctm_id_type: str,
-                    spt_id_type: str,
+                    #spt_id_type: str,
                     ):
     """
     Import features to a dict for all node types.
@@ -423,7 +432,7 @@ def import_features(g: dgl.DGLHeteroGraph,
     user_feat_df = user_feat_df.merge(ctm_id, how='inner', on=ctm_id_type)
 
     ids = user_feat_df.ctm_new_id.values.astype(int)
-    feats = np.stack((user_feat_df.is_male.values,
+    feats = np.stack((user_feat_df.is_male.values,           # ?????? какие фичи сюда вносим???
                       user_feat_df.is_female.values),
                      axis=1)
 
@@ -434,14 +443,14 @@ def import_features(g: dgl.DGLHeteroGraph,
     features_dict['user_feat'] = user_feat
 
     # Item
-    if item_id_type in ['SPECIFIC ITEM IDENTIFIER']:
+    if item_id_type in ['CATEGORY']:
         item_feat_df = item_feat_df.merge(pdt_id,
                                           how='left',
                                           on=item_id_type)
         item_feat_df = item_feat_df[item_feat_df.pdt_new_id < g.number_of_nodes('item')]  # Only IDs that are in graph
 
         ids = item_feat_df.pdt_new_id.values.astype(int)
-        feats = np.stack((item_feat_df.is_junior.values,
+        feats = np.stack((item_feat_df.is_junior.values,   # ??????????
                           item_feat_df.is_male.values,
                           item_feat_df.is_female.values,
                           item_feat_df.eco_design.values,
@@ -451,7 +460,7 @@ def import_features(g: dgl.DGLHeteroGraph,
         item_feat = np.zeros((g.number_of_nodes('item'), feats.shape[1]))
         item_feat[ids] = feats
         item_feat = torch.tensor(item_feat).float()
-    elif item_id_type in ['GENERAL ITEM IDENTIFIER']:
+    elif item_id_type in ['GENERAL ITEM IDENTIFIER']:    #     ?????????????????????????????????
         item_feat = torch.zeros((g.number_of_nodes('item'), 4))
     else:
         raise KeyError(f'Item ID {item_id_type} not recognized.')
@@ -459,6 +468,7 @@ def import_features(g: dgl.DGLHeteroGraph,
     features_dict['item_feat'] = item_feat
 
     # Sport one-hot
+'''        
     if 'sport' in g.ntypes:
         sport_onehot_df = sport_onehot_df.merge(spt_id, how='inner', on=spt_id_type)
         sport_onehot_df.sort_values(by='spt_new_id',
@@ -467,14 +477,15 @@ def import_features(g: dgl.DGLHeteroGraph,
         assert feats.shape[0] == g.num_nodes('sport')
         sport_feat = torch.tensor(feats).float()
         features_dict['sport_feat'] = sport_feat
-
+'''
     # Popularity
+    # Давайте совсем уберем))))    
     if get_popularity:
         item_popularity = np.zeros((g.number_of_nodes('item'), 1))
         pop_df = user_item_train.merge(pdt_id,
                                        how='left',
                                        on=item_id_type)
-        most_recent_date = datetime.strptime(max(pop_df.hit_date), '%Y-%m-%d')
+        most_recent_date = datetime.strptime(max(pop_df.hit_date), '%Y-%m-%d')    # ???????????????? У нас не дата, переписать
         limit_date = datetime.strftime(
             (most_recent_date - timedelta(days=num_days_pop)),
             format='%Y-%m-%d'
