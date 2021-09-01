@@ -69,14 +69,14 @@ class FixedParameters:
         self.ctm_id_type = 'CUSTOMER IDENTIFIER'
         self.days_of_purchases = 365  # Max is 710
         self.days_of_clicks = 30  # Max is 710
-        self.discern_clicks = True
+        self.discern_clicks = False
         self.duplicates = duplicates  # 'keep_last', 'keep_all', 'count_occurrence'
         self.edge_batch_size = edge_batch_size
         self.etype = [('user', 'buys', 'item')]
         if self.discern_clicks:
             self.etype.append(('user', 'clicks', 'item'))
-        self.explore = True
-        self.include_sport = True
+        self.explore = False
+        self.include_sport = False
         self.item_id_type = item_id_type
         self.k = 10
         self.lifespan_of_items = 180
@@ -96,10 +96,10 @@ class FixedParameters:
         if self.discern_clicks:
             self.reverse_etype[('user', 'clicks', 'item')] = ('item', 'clicked-by', 'user')
         self.run_inference = 1
-        self.spt_id_type = 'sport_id'
+        #self.spt_id_type = 'sport_id'
         self.start_epoch = start_epoch
         self.subtrain_size = 0.05
-        self.train_on_clicks = True
+        self.train_on_clicks = False
         self.valid_size = 0.05
         # self.dropout = .5  # HP
         # self.norm = False  # HP
@@ -124,23 +124,23 @@ class DataLoader:
         (
             self.user_item_train,
             self.user_item_test,
-            self.item_sport_interaction,
-            self.user_sport_interaction,
-            self.sport_sportg_interaction,
+            #self.item_sport_interaction,
+            #self.user_sport_interaction,
+            #self.sport_sportg_interaction,
             self.item_feat_df,
             self.user_feat_df,
-            self.sport_feat_df,
-            self.sport_onehot_df,
+            #self.sport_feat_df,
+            #self.sport_onehot_df,
         ) = format_dfs(
             self.data_paths.train_path,
             self.data_paths.test_path,
-            self.data_paths.item_sport_path,
-            self.data_paths.user_sport_path,
-            self.data_paths.sport_sportg_path,
+            #self.data_paths.item_sport_path,
+            #self.data_paths.user_sport_path,
+            #self.data_paths.sport_sportg_path,
             self.data_paths.item_feat_path,
             self.data_paths.user_feat_path,
-            self.data_paths.sport_feat_path,
-            self.data_paths.sport_onehot_path,
+            #self.data_paths.sport_feat_path,
+            #self.data_paths.sport_onehot_path,
             fixed_params.remove,
             fixed_params.ctm_id_type,
             fixed_params.item_id_type,
@@ -155,12 +155,12 @@ class DataLoader:
              ) = format_dfs(
                 self.data_paths.train_path,
                 self.data_paths.test_path,
-                self.data_paths.item_sport_path,
-                self.data_paths.user_sport_path,
-                self.data_paths.sport_sportg_path,
+                #self.data_paths.item_sport_path,
+                #self.data_paths.user_sport_path,
+                #self.data_paths.sport_sportg_path,
                 self.data_paths.item_feat_path,
                 self.data_paths.user_feat_path,
-                self.data_paths.sport_feat_path,
+                #self.data_paths.sport_feat_path,
                 0,  # remove 0
                 fixed_params.ctm_id_type,
                 fixed_params.item_id_type,
@@ -170,14 +170,14 @@ class DataLoader:
                 fixed_params.report_model_coverage,
             )
 
-        self.ctm_id, self.pdt_id, self.spt_id = create_ids(
+        self.ctm_id, self.pdt_id = create_ids(  #self.ctm_id, self.pdt_id, self.spt_id = create_ids(
             self.user_item_train,
-            self.user_sport_interaction,
-            self.sport_sportg_interaction,
+            #self.user_sport_interaction,
+            #self.sport_sportg_interaction,
             self.item_feat_df,
             item_id_type=fixed_params.item_id_type,
             ctm_id_type=fixed_params.ctm_id_type,
-            spt_id_type=fixed_params.spt_id_type,
+            #spt_id_type=fixed_params.spt_id_type,
         )
 
         (
@@ -188,15 +188,15 @@ class DataLoader:
         ) = df_to_adjacency_list(
             self.user_item_train,
             self.user_item_test,
-            self.item_sport_interaction,
-            self.user_sport_interaction,
-            self.sport_sportg_interaction,
+            #self.item_sport_interaction,
+            #self.user_sport_interaction,
+            #self.sport_sportg_interaction,
             self.ctm_id,
             self.pdt_id,
-            self.spt_id,
+            #self.spt_id,
             item_id_type=fixed_params.item_id_type,
             ctm_id_type=fixed_params.ctm_id_type,
-            spt_id_type=fixed_params.spt_id_type,
+            #spt_id_type=fixed_params.spt_id_type,
             discern_clicks=fixed_params.discern_clicks,
             duplicates=fixed_params.duplicates,
         )
@@ -267,22 +267,22 @@ def assign_graph_features(graph,
         graph,
         data.user_feat_df,
         data.item_feat_df,
-        data.sport_onehot_df,
+        #data.sport_onehot_df,
         data.ctm_id,
         data.pdt_id,
-        data.spt_id,
+        #data.spt_id,
         data.user_item_train,
         params['use_popularity'],
         params['days_popularity'],
         fixed_params.item_id_type,
         fixed_params.ctm_id_type,
-        fixed_params.spt_id_type,
+        #fixed_params.spt_id_type,
     )
 
     graph.nodes['user'].data['features'] = features_dict['user_feat']
     graph.nodes['item'].data['features'] = features_dict['item_feat']
-    if 'sport' in graph.ntypes:
-        graph.nodes['sport'].data['features'] = features_dict['sport_feat']
+    #if 'sport' in graph.ntypes:
+    #    graph.nodes['sport'].data['features'] = features_dict['sport_feat']
 
     # add date as edge feature
     if params['use_recency']:
