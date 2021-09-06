@@ -129,19 +129,19 @@ def format_dfs(
         # Make sure that if no observations were removed by days of clicks / purchases, no user is only in test set
         user_item_test = user_item_test[user_item_test[ctm_id_type].isin(user_item_train[ctm_id_type].unique())]
 
-'''    
-    if item_id_type == 'GENERAL ITEM IDENTIFIER':
-        user_item_train = user_item_train.merge(
-            item_feat_df[['SPECIFIC ITEM IDENTIFIER', 'GENERAL ITEM IDENTIFIER']].drop_duplicates(),
-            how='left',
-            on='SPECIFIC ITEM IDENTIFIER')
-        user_item_test = user_item_test.merge(
-            item_feat_df[['SPECIFIC ITEM IDENTIFIER', 'GENERAL ITEM IDENTIFIER']].drop_duplicates(),
-            how='left',
-            on='SPECIFIC ITEM IDENTIFIER')
-        assert user_item_train.general_item_identifier.isna().sum() == 0
-        assert user_item_test.general_item_identifier.isna().sum() == 0
-'''
+
+    # if item_id_type == 'GENERAL ITEM IDENTIFIER':
+    #     user_item_train = user_item_train.merge(
+    #         item_feat_df[['SPECIFIC ITEM IDENTIFIER', 'GENERAL ITEM IDENTIFIER']].drop_duplicates(),
+    #         how='left',
+    #         on='SPECIFIC ITEM IDENTIFIER')
+    #     user_item_test = user_item_test.merge(
+    #         item_feat_df[['SPECIFIC ITEM IDENTIFIER', 'GENERAL ITEM IDENTIFIER']].drop_duplicates(),
+    #         how='left',
+    #         on='SPECIFIC ITEM IDENTIFIER')
+    #     assert user_item_train.general_item_identifier.isna().sum() == 0
+    #     assert user_item_test.general_item_identifier.isna().sum() == 0
+
 
     # Item-sport interaction
 '''
