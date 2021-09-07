@@ -12,20 +12,20 @@ from src.utils import read_data
 def format_dfs(
         train_path,  # str (path) or pd.Dataframe directly (df)
         test_path,  # str (path) or pd.Dataframe directly (df)
-        #item_sport_path: str,
-        #user_sport_path: str,
-        #sport_sportg_path: str,
+        # item_sport_path: str,
+        # user_sport_path: str,
+        # sport_sportg_path: str,
         item_feat_path: str,
         user_feat_path: str,
-        #sport_feat_path: str,
-        #sport_onehot_path: str,
+        # sport_feat_path: str,
+        # sport_onehot_path: str,
         remove: float = 0.,
         ctm_id_type: str = 'household_key',
         item_id_type: str = 'CATEGORY',
         days_of_purchases: int = 710,
         days_of_clicks: int = 710,
         lifespan_of_items: int = 710,
-        report_model_coverage: bool = False,
+        report_model_coverage: bool = False
 ):
     """
     Import all dfs from csv paths and preprocess interactions to sample interactions and remove old users and items.
@@ -76,8 +76,8 @@ def format_dfs(
     # User, item and sport features
     item_feat_df = read_data(item_feat_path)
     user_feat_df = read_data(user_feat_path)
-    #sport_feat_df = read_data(sport_feat_path)
-    #sport_onehot_df = read_data(sport_onehot_path)
+    # sport_feat_df = read_data(sport_feat_path)
+    # sport_onehot_df = read_data(sport_onehot_path)
 
     # User-item interaction. We allow direct df instead of path: check which was passed.
     if isinstance(train_path, str):
@@ -144,28 +144,28 @@ def format_dfs(
 
 
     # Item-sport interaction
-'''
-    item_sport_interaction = read_data(item_sport_path)
-    if lifespan_of_items < days_of_purchases:
-        item_sport_interaction = item_sport_interaction[item_sport_interaction['SPECIFIC ITEM IDENTIFIER'].isin(
-            item_list)]
-    if item_id_type == 'GENERAL ITEM IDENTIFIER':
-        item_sport_interaction = item_sport_interaction.merge(
-            item_feat_df[['SPECIFIC ITEM IDENTIFIER', 'GENERAL ITEM IDENTIFIER']],
-                                                              how='left',
-                                                              on='SPECIFIC ITEM IDENTIFIER')
-    # Drop duplicates if not item_id_type not model number
-    item_sport_interaction.drop_duplicates(inplace=True)
+
+    # item_sport_interaction = read_data(item_sport_path)
+    # if lifespan_of_items < days_of_purchases:
+    #     item_sport_interaction = item_sport_interaction[item_sport_interaction['SPECIFIC ITEM IDENTIFIER'].isin(
+    #         item_list)]
+    # if item_id_type == 'GENERAL ITEM IDENTIFIER':
+    #     item_sport_interaction = item_sport_interaction.merge(
+    #         item_feat_df[['SPECIFIC ITEM IDENTIFIER', 'GENERAL ITEM IDENTIFIER']],
+    #                                                           how='left',
+    #                                                           on='SPECIFIC ITEM IDENTIFIER')
+    # # Drop duplicates if not item_id_type not model number
+    # item_sport_interaction.drop_duplicates(inplace=True)
 
 
     # User-sport interaction
-    user_sport_interaction = read_data(user_sport_path)
-    if remove > 0:
-        user_sport_interaction = user_sport_interaction[user_sport_interaction[ctm_id_type].isin(ctm_list)]
+    # user_sport_interaction = read_data(user_sport_path)
+    # if remove > 0:
+    #     user_sport_interaction = user_sport_interaction[user_sport_interaction[ctm_id_type].isin(ctm_list)]
+    #
+    # # Sport-sportgroups interaction
+    # sport_sportg_interaction = read_data(sport_sportg_path)
 
-    # Sport-sportgroups interaction
-    sport_sportg_interaction = read_data(sport_sportg_path)
-'''
 
     if report_model_coverage:
         train_users = user_item_train[ctm_id_type].unique().tolist()
@@ -343,43 +343,44 @@ def df_to_adjacency_list(user_item_train: pd.DataFrame,
     ground_truth_test = (test_src, test_dst)
 
     # Item sport : merge new ids with old ids
-'''
-    item_sport_interaction = item_sport_interaction.merge(spt_id,
-                                                          how='left',
-                                                          on=spt_id_type)
-    item_sport_interaction = item_sport_interaction.merge(pdt_id,
-                                                          how='left',
-                                                          on=item_id_type)
-    item_sport_interaction.dropna(inplace=True)  # drop items with no sports associated
 
-    adjacency_dict['item_sport_src'] = item_sport_interaction.pdt_new_id.values
-    adjacency_dict['item_sport_dst'] = item_sport_interaction.spt_new_id.values
-
-    # User sport : merge new ids with old ids
-    user_sport_interaction = user_sport_interaction.merge(spt_id,
-                                                          how='left',
-                                                          on=spt_id_type)
-    user_sport_interaction = user_sport_interaction.merge(ctm_id,
-                                                          how='left',
-                                                          on=ctm_id_type)
-    user_sport_interaction.dropna(inplace=True)
-
-    adjacency_dict['user_sport_src'] = user_sport_interaction.ctm_new_id.values
-    adjacency_dict['user_sport_dst'] = user_sport_interaction.spt_new_id.values
+    # item_sport_interaction = item_sport_interaction.merge(spt_id,
+    #                                                       how='left',
+    #                                                       on=spt_id_type)
+    # item_sport_interaction = item_sport_interaction.merge(pdt_id,
+    #                                                       how='left',
+    #                                                       on=item_id_type)
+    # item_sport_interaction.dropna(inplace=True)  # drop items with no sports associated
+    #
+    # adjacency_dict['item_sport_src'] = item_sport_interaction.pdt_new_id.values
+    # adjacency_dict['item_sport_dst'] = item_sport_interaction.spt_new_id.values
+    #
+    # # User sport : merge new ids with old ids
+    # user_sport_interaction = user_sport_interaction.merge(spt_id,
+    #                                                       how='left',
+    #                                                       on=spt_id_type)
+    # user_sport_interaction = user_sport_interaction.merge(ctm_id,
+    #                                                       how='left',
+    #                                                       on=ctm_id_type)
+    # user_sport_interaction.dropna(inplace=True)
+    #
+    # adjacency_dict['user_sport_src'] = user_sport_interaction.ctm_new_id.values
+    # adjacency_dict['user_sport_dst'] = user_sport_interaction.spt_new_id.values
 
     # Sport sportgroups
-    sport_sportg_interaction = sport_sportg_interaction.merge(spt_id,
-                                                              how='left',
-                                                              left_on='sports_id',
-                                                              right_on=spt_id_type)
-    sport_sportg_interaction = sport_sportg_interaction.merge(spt_id,
-                                                              how='left',
-                                                              left_on='sportsgroup_id',
-                                                              right_on=spt_id_type)
+    # sport_sportg_interaction = sport_sportg_interaction.merge(spt_id,
+    #                                                           how='left',
+    #                                                           left_on='sports_id',
+    #                                                           right_on=spt_id_type)
+    # sport_sportg_interaction = sport_sportg_interaction.merge(spt_id,
+    #                                                           how='left',
+    #                                                           left_on='sportsgroup_id',
+    #                                                           right_on=spt_id_type)
+    #
+    # adjacency_dict['sport_sportg_src'] = sport_sportg_interaction.spt_new_id_x.values
+    # adjacency_dict['sport_sportg_dst'] = sport_sportg_interaction.spt_new_id_y.values
 
-    adjacency_dict['sport_sportg_src'] = sport_sportg_interaction.spt_new_id_x.values
-    adjacency_dict['sport_sportg_dst'] = sport_sportg_interaction.spt_new_id_y.values
-'''
+
     return adjacency_dict, ground_truth_test, ground_truth_purchase_test, user_item_train
 
 
@@ -432,8 +433,8 @@ def import_features(g: dgl.DGLHeteroGraph,
     user_feat_df = user_feat_df.merge(ctm_id, how='inner', on=ctm_id_type)
 
     ids = user_feat_df.ctm_new_id.values.astype(int)
-    feats = np.stack((user_feat_df.is_male.values,           # ?????? какие фичи сюда вносим???
-                      user_feat_df.is_female.values),
+    feats = np.stack((user_feat_df.AGE_DESC_LE.values,           # СЮДА ВНОСИМ НАШИ ФИЧИ
+                      user_feat_df.HOUSEHOLD_SIZE_DESC_LE.values),
                      axis=1)
 
     user_feat = np.zeros((g.number_of_nodes('user'), 2))
@@ -450,10 +451,8 @@ def import_features(g: dgl.DGLHeteroGraph,
         item_feat_df = item_feat_df[item_feat_df.pdt_new_id < g.number_of_nodes('item')]  # Only IDs that are in graph
 
         ids = item_feat_df.pdt_new_id.values.astype(int)
-        feats = np.stack((item_feat_df.is_junior.values,   # ??????????
-                          item_feat_df.is_male.values,
-                          item_feat_df.is_female.values,
-                          item_feat_df.eco_design.values,
+        feats = np.stack((item_feat_df.N_PRODUCTS.values,   # СЮДА ВНОСИМ НАШИ ФИЧИ
+                          item_feat_df.N_MANUFACTURERS.values,
                           ),
                          axis=1)
 
@@ -468,16 +467,16 @@ def import_features(g: dgl.DGLHeteroGraph,
     features_dict['item_feat'] = item_feat
 
     # Sport one-hot
-'''        
-    if 'sport' in g.ntypes:
-        sport_onehot_df = sport_onehot_df.merge(spt_id, how='inner', on=spt_id_type)
-        sport_onehot_df.sort_values(by='spt_new_id',
-                                    inplace=True)  # Values need to be sorted by node id to align with g.nodes['sport']
-        feats = sport_onehot_df.drop(labels=[spt_id_type, 'spt_new_id'], axis=1).values
-        assert feats.shape[0] == g.num_nodes('sport')
-        sport_feat = torch.tensor(feats).float()
-        features_dict['sport_feat'] = sport_feat
-'''
+
+    # if 'sport' in g.ntypes:
+    #     sport_onehot_df = sport_onehot_df.merge(spt_id, how='inner', on=spt_id_type)
+    #     sport_onehot_df.sort_values(by='spt_new_id',
+    #                                 inplace=True)  # Values need to be sorted by node id to align with g.nodes['sport']
+    #     feats = sport_onehot_df.drop(labels=[spt_id_type, 'spt_new_id'], axis=1).values
+    #     assert feats.shape[0] == g.num_nodes('sport')
+    #     sport_feat = torch.tensor(feats).float()
+    #     features_dict['sport_feat'] = sport_feat
+
     # Popularity
     # Давайте совсем уберем))))    
     if get_popularity:
