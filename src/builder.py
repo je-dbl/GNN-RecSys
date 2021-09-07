@@ -21,7 +21,7 @@ def format_dfs(
         # sport_onehot_path: str,
         remove: float = 0.,
         ctm_id_type: str = 'household_key',
-        item_id_type: str = 'CATEGORY',
+        item_id_type: str = 'category',
         days_of_purchases: int = 710,
         days_of_clicks: int = 710,
         lifespan_of_items: int = 710,
@@ -115,8 +115,8 @@ def format_dfs(
             (most_recent_date - timedelta(days=int(lifespan_of_items))),
             format='%Y-%m-%d'
         )
-        item_list = user_item_train[user_item_train.hit_date >= limit_date]['CATEGORY'].unique()
-        user_item_train = user_item_train[user_item_train['CATEGORY'].isin(item_list)]
+        item_list = user_item_train[user_item_train.hit_date >= limit_date]['category'].unique()
+        user_item_train = user_item_train[user_item_train['category'].isin(item_list)]
 
     if remove > 0:
         ctm_list = user_item_train[ctm_id_type].unique()
@@ -188,7 +188,7 @@ def create_ids(user_item_train: pd.DataFrame,
                #user_sport_interaction: pd.DataFrame,
                #sport_sportg_interaction: pd.DataFrame,
                item_feat_df,
-               item_id_type: str = 'CATEGORY',
+               item_id_type: str = 'category',
                ctm_id_type: str = 'household_key',
                #spt_id_type: str = 'sport_id',
                #) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
@@ -444,7 +444,7 @@ def import_features(g: dgl.DGLHeteroGraph,
     features_dict['user_feat'] = user_feat
 
     # Item
-    if item_id_type in ['CATEGORY']:
+    if item_id_type in ['category']:
         item_feat_df = item_feat_df.merge(pdt_id,
                                           how='left',
                                           on=item_id_type)
