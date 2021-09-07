@@ -558,6 +558,8 @@ def main(from_beginning, verbose, visualization, check_embedding,
     fixed_params = FixedParameters(num_epochs, start_epoch, patience, edge_batch_size,
                                    remove, item_id_type, duplicates)
 
+    print(fixed_params.ctm_id_type)
+
     checkpoint_saver = CheckpointSaver(
         f'checkpoint{str(datetime.datetime.now())[:-10]}.pkl',
         compress=9
