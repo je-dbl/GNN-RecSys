@@ -9,15 +9,15 @@ from src.builder import (create_ids, df_to_adjacency_list,
 
 class DataPaths:
     def __init__(self):
-        self.result_filepath = 'log_the_results.txt'
+        self.result_filepath = 'data/log_the_results.txt'
         #self.sport_feat_path = 'FEATURE DATASET, SPORTS (sport names) .csv'
-        self.train_path = 'user_item_interactions_train.csv'
-        self.test_path = 'user_item_interactions_test.csv'
+        self.train_path = 'data/user_item_interactions_train.csv'
+        self.test_path = 'data/user_item_interactions_test.csv'
         #self.item_sport_path = 'INTERACTION LIST, ITEM-SPORT .csv'
         #self.user_sport_path = 'INTERACTION LIST, USER-SPORT .csv'
         #self.sport_sportg_path = 'INTERACTION LIST, SPORT-SPORT .csv'
-        self.item_feat_path = 'items_features.csv'
-        self.user_feat_path = 'user_features.csv'
+        self.item_feat_path = 'data/items_features.csv'
+        self.user_feat_path = 'data/user_features.csv'
         #self.sport_onehot_path = 'FEATURE DATASET, SPORTS (one-hot vectors) .csv'
 
 class FixedParameters:
