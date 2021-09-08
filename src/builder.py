@@ -189,7 +189,7 @@ def create_ids(user_item_train: pd.DataFrame,
                #sport_sportg_interaction: pd.DataFrame,
                item_feat_df,
                item_id_type: str = 'category',
-               ctm_id_type: str = 'household_key',
+               ctm_id_type: str = 'household_key'
                #spt_id_type: str = 'sport_id',
                #) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
                ) -> Tuple[pd.DataFrame, pd.DataFrame]:
