@@ -209,7 +209,7 @@ def create_ids(user_item_train: pd.DataFrame,
     """
 
     # Create user ids
-    ctm_id = pd.DataFrame(user_item_train[ctm_id_type].unique(),
+    ctm_id = pd.DataFrame(user_item_train[ctm_id_type[0]].unique(),
                           columns=[ctm_id_type])
     ctm_id['ctm_new_id'] = ctm_id.index
 
