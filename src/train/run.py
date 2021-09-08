@@ -86,9 +86,6 @@ def train_model(model,
         model.train()  # Because if not, after eval, dropout would be still be inactive
         i = 0
         total_loss = 0
-        print(edgeloader_train)
-        print(type(edgeloader_train))
-        print(edgeloader_train[0])
         for _, pos_g, neg_g, blocks in edgeloader_train:
             print('in cycle')
             opt.zero_grad()
