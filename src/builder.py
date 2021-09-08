@@ -117,7 +117,7 @@ def format_dfs(
         )
         item_list = user_item_train[user_item_train.hit_date >= limit_date]['category'].unique()
         user_item_train = user_item_train[user_item_train['category'].isin(item_list)]
--
+
     if remove > 0:
         ctm_list = user_item_train[ctm_id_type].iloc[0].unique()
         np.random.shuffle(ctm_list)
