@@ -560,6 +560,7 @@ def main(from_beginning, verbose, visualization, check_embedding,
 
     print(fixed_params.ctm_id_type)
     print(fixed_params)
+    print(DataLoader(data_paths, fixed_params))
 
     checkpoint_saver = CheckpointSaver(
         f'checkpoint{str(datetime.datetime.now())[:-10]}.pkl',
