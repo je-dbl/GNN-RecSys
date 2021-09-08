@@ -523,6 +523,8 @@ def fitness(**params):
     is then multiplied by -1, since skopt is minimizing metrics.
     """
     recall = train(**{**fitness_params, **params})
+    print(recall)
+    print(type(recall))
     return -recall
 
 
