@@ -232,7 +232,7 @@ def create_ids(user_item_train: pd.DataFrame,
     # spt_id['spt_new_id'] = spt_id.index
     #
     # #return ctm_id, pdt_id, spt_id
-    # return ctm_id, pdt_id
+    return ctm_id, pdt_id
 
 
 def df_to_adjacency_list(user_item_train: pd.DataFrame,
