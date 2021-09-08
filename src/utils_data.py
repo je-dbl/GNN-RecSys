@@ -176,7 +176,7 @@ class DataLoader:
             # self.sport_sportg_interaction,
             self.item_feat_df,
             item_id_type=fixed_params.item_id_type,
-            ctm_id_type=fixed_params.ctm_id_type,
+            ctm_id_type=fixed_params.ctm_id_type
             # spt_id_type=fixed_params.spt_id_type,
         )
 
@@ -198,7 +198,7 @@ class DataLoader:
             ctm_id_type=fixed_params.ctm_id_type,
             # spt_id_type=fixed_params.spt_id_type,
             discern_clicks=fixed_params.discern_clicks,
-            duplicates=fixed_params.duplicates,
+            duplicates=fixed_params.duplicates
         )
 
         if fixed_params.discern_clicks:
