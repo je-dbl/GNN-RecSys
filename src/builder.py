@@ -119,7 +119,7 @@ def format_dfs(
         user_item_train = user_item_train[user_item_train['category'].isin(item_list)]
 
     if remove > 0:
-        ctm_list = user_item_train[ctm_id_type[0]].unique()
+        ctm_list = user_item_train[ctm_id_type].unique()
         np.random.shuffle(ctm_list)
         ctm_list = ctm_list[:int(len(ctm_list) * (1 - remove))]
         user_item_train = user_item_train[user_item_train[ctm_id_type].isin(ctm_list)]
@@ -209,7 +209,7 @@ def create_ids(user_item_train: pd.DataFrame,
     """
 
     # Create user ids
-    ctm_id = pd.DataFrame(user_item_train[ctm_id_type[0]].unique(),
+    ctm_id = pd.DataFrame(user_item_train[ctm_id_type].unique(),
                           columns=[ctm_id_type])
     ctm_id['ctm_new_id'] = ctm_id.index
 

@@ -66,7 +66,7 @@ class FixedParameters:
             When parametrizing the GNN, edges of purchases are always included. If true, clicks will also
             be included
         """
-        self.ctm_id_type = ['household_key']
+        self.ctm_id_type = 'household_key'
         self.days_of_purchases = 365  # Max is 710
         self.days_of_clicks = 30  # Max is 710
         self.discern_clicks = False
