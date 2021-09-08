@@ -19,7 +19,7 @@ from src.sampling import train_valid_split, generate_dataloaders
 from src.metrics import (create_already_bought, create_ground_truth,
                          get_metrics_at_k, get_recs)
 from src.train.run import train_model, get_embeddings
-from src.evaluation import explore_recs, explore_sports, check_coverage
+from src.evaluation import explore_recs, check_coverage # explore_sports, check_coverage
 from src.utils import save_txt, save_outputs, get_last_checkpoint
 from src.utils_data import DataLoader, FixedParameters, DataPaths, assign_graph_features
 from src.utils_vizualization import plot_train_loss
@@ -315,13 +315,13 @@ def train(data, fixed_params, data_paths,
         trained_model.eval()
         with torch.no_grad():
             log.debug('ANALYSIS OF RECOMMENDATIONS')
-            if 'sport' in train_graph.ntypes:
-                result_sport = explore_sports(embeddings,
-                                              data.sport_feat_df,
-                                              data.spt_id,
-                                              fixed_params.num_choices)
-
-                save_txt(result_sport, data_paths.result_filepath, mode='a')
+            # if 'sport' in train_graph.ntypes:
+            #     result_sport = explore_sports(embeddings,
+            #                                   data.sport_feat_df,
+            #                                   data.spt_id,
+            #                                   fixed_params.num_choices)
+            #
+            #     save_txt(result_sport, data_paths.result_filepath, mode='a')
 
             already_bought_dict = create_already_bought(valid_graph,
                                                         all_eids_dict[('user', 'buys', 'item')],

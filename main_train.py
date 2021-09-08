@@ -15,7 +15,7 @@ from src.train.run import train_model, get_embeddings
 from src.utils_vizualization import plot_train_loss
 from src.metrics import (create_already_bought, create_ground_truth,
                          get_metrics_at_k, get_recs)
-from src.evaluation import explore_recs, explore_sports, check_coverage
+from src.evaluation import explore_recs, check_coverage # explore_sports, check_coverage
 from presplit import presplit_data
 
 from logging_config import get_logger
@@ -29,15 +29,15 @@ num_workers = 4 if cuda else 0
 
 class TrainDataPaths:
     def __init__(self):
-        self.result_filepath = 'TXT FILE WHERE TO LOG THE RESULTS .txt'
-        self.sport_feat_path = 'FEATURE DATASET, SPORTS (sport names) .csv'
-        self.full_interaction_path = 'INTERACTION LIST, USER-ITEM (Full dataset, not splitted between train & test).csv'
-        self.item_sport_path = 'INTERACTION LIST, ITEM-SPORT .csv'
-        self.user_sport_path = 'INTERACTION LIST, USER-SPORT .csv'
-        self.sport_sportg_path = 'INTERACTION LIST, SPORT-SPORT .csv'
-        self.item_feat_path = 'FEATURE DATASET, ITEMS .csv'
-        self.user_feat_path = 'FEATURE DATASET, USERS.csv'
-        self.sport_onehot_path = 'FEATURE DATASET, SPORTS (one-hot vectors) .csv'
+        self.result_filepath = 'data/log_the_results.txt'
+        # self.sport_feat_path = 'FEATURE DATASET, SPORTS (sport names) .csv'
+        self.full_interaction_path = 'data/user_item_interactions_train.csv'
+        # self.item_sport_path = 'INTERACTION LIST, ITEM-SPORT .csv'
+        # self.user_sport_path = 'INTERACTION LIST, USER-SPORT .csv'
+        # self.sport_sportg_path = 'INTERACTION LIST, SPORT-SPORT .csv'
+        self.item_feat_path = 'data/items_features.csv'
+        self.user_feat_path = 'data/user_features.csv'
+        # self.sport_onehot_path = 'FEATURE DATASET, SPORTS (one-hot vectors) .csv'
 
 
 def train_full_model(fixed_params_path,
@@ -92,8 +92,8 @@ def train_full_model(fixed_params_path,
                                       remove_unk=True,
                                       sort=True,
                                       test_size_days=1,
-                                      item_id_type='ITEM IDENTIFIER',
-                                      ctm_id_type='CUSTOMER IDENTIFIER', )
+                                      item_id_type='category',
+                                      ctm_id_type='household_key', )
     train_data_paths.train_path = train_df
     train_data_paths.test_path = test_df
     data = DataLoader(train_data_paths, fixed_params)
@@ -297,13 +297,13 @@ def train_full_model(fixed_params_path,
         trained_model.eval()
         with torch.no_grad():
             log.debug('ANALYSIS OF RECOMMENDATIONS')
-            if 'sport' in train_graph.ntypes:
-                result_sport = explore_sports(embeddings,
-                                              data.sport_feat_df,
-                                              data.spt_id,
-                                              fixed_params.num_choices)
-
-                save_txt(result_sport, train_data_paths.result_filepath, mode='a')
+            # if 'sport' in train_graph.ntypes:
+            #     result_sport = explore_sports(embeddings,
+            #                                   data.sport_feat_df,
+            #                                   data.spt_id,
+            #                                   fixed_params.num_choices)
+            #
+            #     save_txt(result_sport, train_data_paths.result_filepath, mode='a')
 
             already_bought_dict = create_already_bought(valid_graph,
                                                         all_eids_dict[('user', 'buys', 'item')],
@@ -343,7 +343,7 @@ def train_full_model(fixed_params_path,
                          fixed_params.item_id_type,
                          train_data_paths.result_filepath)
 
-            if fixed_params.item_id_type == 'SPECIFIC ITEM IDENTIFIER':
+            if fixed_params.item_id_type == 'category':
                 coverage_metrics = check_coverage(data.user_item_train,
                                                   data.item_feat_df,
                                                   data.pdt_id,
@@ -355,7 +355,7 @@ def train_full_model(fixed_params_path,
                     "\n|| Recommendations : "
                     "Generic {:.1f}% | Junior {:.1f}% | Male {:.1f}% | Female {:.1f} | Eco {:.1f}%%"
                         .format(
-                        coverage_metrics['generic_mean_whole'] * 100,
+                        coverage_metrics['generic_mean_whole'] * 100,  # ?????????
                         coverage_metrics['junior_mean_whole'] * 100,
                         coverage_metrics['male_mean_whole'] * 100,
                         coverage_metrics['female_mean_whole'] * 100,

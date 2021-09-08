@@ -87,7 +87,7 @@ def train_model(model,
         i = 0
         total_loss = 0
         for _, pos_g, neg_g, blocks in edgeloader_train:
-            print('in cycle')
+            # print('in cycle')
             opt.zero_grad()
 
             # Negative mask

@@ -149,31 +149,31 @@ def explore_recs(recs: dict,
                              ground_truth_purchase_dict)
 
 
-def explore_sports(h,
-                   sport_feat_df: pd.DataFrame,
-                   spt_id: pd.DataFrame,
-                   num_choices: int,
-                   ):
-    """
-    For a random sample of sport, fetch name of 5 most similar sports.
-    """
-    sport_h = h['sport']
-    sim_matrix = cosine_similarity(sport_h.detach().cpu())
-    choices = random.sample(range(sport_h.shape[0]), num_choices)
-    sentence = ''
-    for sid in choices:
-        # fetch name of sport id
-        try:
-            old_sid = spt_id.sport_id[spt_id.spt_new_id == sid].item()
-            chosen_name = sport_feat_df.sport_label[sport_feat_df.sport_id == old_sid].item()
-        except:
-            chosen_name = 'N/A'
-        # fetch most similar sports
-        top = np.argpartition(sim_matrix[sid], -5)[-5:]
-        top_list = spt_id.sport_id[spt_id.spt_new_id.isin(top.tolist())].tolist()
-        top_names = sport_feat_df.sport_label[sport_feat_df.sport_id.isin(top_list)].unique()
-        sentence += 'For sport {}, top similar sports are {} \n'.format(chosen_name, top_names)
-    return sentence
+# def explore_sports(h,
+#                    sport_feat_df: pd.DataFrame,
+#                    spt_id: pd.DataFrame,
+#                    num_choices: int,
+#                    ):
+#     """
+#     For a random sample of sport, fetch name of 5 most similar sports.
+#     """
+#     sport_h = h['sport']
+#     sim_matrix = cosine_similarity(sport_h.detach().cpu())
+#     choices = random.sample(range(sport_h.shape[0]), num_choices)
+#     sentence = ''
+#     for sid in choices:
+#         # fetch name of sport id
+#         try:
+#             old_sid = spt_id.sport_id[spt_id.spt_new_id == sid].item()
+#             chosen_name = sport_feat_df.sport_label[sport_feat_df.sport_id == old_sid].item()
+#         except:
+#             chosen_name = 'N/A'
+#         # fetch most similar sports
+#         top = np.argpartition(sim_matrix[sid], -5)[-5:]
+#         top_list = spt_id.sport_id[spt_id.spt_new_id.isin(top.tolist())].tolist()
+#         top_names = sport_feat_df.sport_label[sport_feat_df.sport_id.isin(top_list)].unique()
+#         sentence += 'For sport {}, top similar sports are {} \n'.format(chosen_name, top_names)
+#     return sentence
 
 
 def check_coverage(user_item_interaction,
@@ -194,14 +194,14 @@ def check_coverage(user_item_interaction,
     # count number of types in original dataset
     df = user_item_interaction.merge(item_feat_df,
                                      how='left',
-                                     on='ITEM IDENTIFIER')
-    df['is_generic'] = (df.is_junior + df.is_male + df.is_female).astype(bool) * -1 + 1
+                                     on='category')
+    #df['is_generic'] = (df.is_junior + df.is_male + df.is_female).astype(bool) * -1 + 1
 
-    coverage_metrics['generic_mean_whole'] = df.is_generic.mean()
-    coverage_metrics['junior_mean_whole'] = df.is_junior.mean()
-    coverage_metrics['male_mean_whole'] = df.is_male.mean()
-    coverage_metrics['female_mean_whole'] = df.is_female.mean()
-    coverage_metrics['eco_mean_whole'] = df.eco_design.mean()
+    #coverage_metrics['generic_mean_whole'] = df.is_generic.mean()
+    coverage_metrics['N_PRODUCTS_whole'] = df.N_PRODUCTS.mean()
+    coverage_metrics['N_MANUFACTURERS_whole'] = df.N_MANUFACTURERS.mean()
+    # coverage_metrics['female_mean_whole'] = df.is_female.mean()
+    # coverage_metrics['eco_mean_whole'] = df.eco_design.mean()
 
     # count in 'recs'
     recs_df = pd.DataFrame(recs.items())
@@ -213,7 +213,7 @@ def check_coverage(user_item_interaction,
                             right_on='pdt_new_id')
     recs_df = recs_df.merge(item_feat_df,
                             how='left',
-                            on='ITEM IDENTIFIER')
+                            on='category')
 
     recs_df['is_generic'] = (recs_df.is_junior + recs_df.is_male + recs_df.is_female).astype(bool) * -1 + 1
 
