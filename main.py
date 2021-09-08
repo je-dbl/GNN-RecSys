@@ -559,6 +559,7 @@ def main(from_beginning, verbose, visualization, check_embedding,
                                    remove, item_id_type, duplicates)
 
     print(fixed_params.ctm_id_type)
+    print(fixed_params)
 
     checkpoint_saver = CheckpointSaver(
         f'checkpoint{str(datetime.datetime.now())[:-10]}.pkl',

@@ -223,17 +223,17 @@ def create_ids(user_item_train: pd.DataFrame,
     pdt_id['pdt_new_id'] = pdt_id.index
 
     # Create sport ids
-'''        
-    unique_sports = np.append(sport_sportg_interaction.sports_id.unique(),
-                              sport_sportg_interaction.sportsgroup_id.unique())
-    unique_sports = np.unique(np.append(unique_sports,
-                                        user_sport_interaction[spt_id_type].unique()))
-    spt_id = pd.DataFrame(unique_sports, columns=[spt_id_type])
-    spt_id['spt_new_id'] = spt_id.index
 
-    #return ctm_id, pdt_id, spt_id
-    return ctm_id, pdt_id
-'''
+    # unique_sports = np.append(sport_sportg_interaction.sports_id.unique(),
+    #                           sport_sportg_interaction.sportsgroup_id.unique())
+    # unique_sports = np.unique(np.append(unique_sports,
+    #                                     user_sport_interaction[spt_id_type].unique()))
+    # spt_id = pd.DataFrame(unique_sports, columns=[spt_id_type])
+    # spt_id['spt_new_id'] = spt_id.index
+    #
+    # #return ctm_id, pdt_id, spt_id
+    # return ctm_id, pdt_id
+
 
 def df_to_adjacency_list(user_item_train: pd.DataFrame,
                          user_item_test: pd.DataFrame,
