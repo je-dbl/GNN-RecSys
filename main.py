@@ -361,7 +361,7 @@ def train(data, fixed_params, data_paths,
                          fixed_params.item_id_type,
                          data_paths.result_filepath)
 
-            if fixed_params.item_id_type == 'SPECIFIC ITEM_IDENTIFIER':
+            if fixed_params.item_id_type == 'category':
                 coverage_metrics = check_coverage(data.user_item_train,
                                                   data.item_feat_df,
                                                   data.pdt_id,
@@ -369,20 +369,20 @@ def train(data, fixed_params, data_paths,
 
                 sentence = (
                     "COVERAGE \n|| All transactions : "
-                    "Generic {:.1f}% | Junior {:.1f}% | Male {:.1f}% | Female {:.1f}% | Eco {:.1f}% "
+                    "N_PRODUCT {:.1f}% | N_MANUFACTURERS {:.1f}%"
                     "\n|| Recommendations : "
-                    "Generic {:.1f}% | Junior {:.1f}% | Male {:.1f}% | Female {:.1f} | Eco {:.1f}%%"
+                    "N_PRODUCTc {:.1f}% | N_MANUFACTURERS {:.1f}%"
                         .format(
-                        coverage_metrics['generic_mean_whole'] * 100,
-                        coverage_metrics['junior_mean_whole'] * 100,
-                        coverage_metrics['male_mean_whole'] * 100,
-                        coverage_metrics['female_mean_whole'] * 100,
-                        coverage_metrics['eco_mean_whole'] * 100,
-                        coverage_metrics['generic_mean_recs'] * 100,
-                        coverage_metrics['junior_mean_recs'] * 100,
-                        coverage_metrics['male_mean_recs'] * 100,
-                        coverage_metrics['female_mean_recs'] * 100,
-                        coverage_metrics['eco_mean_recs'] * 100,
+                        coverage_metrics['N_PRODUCTS_whole'] * 100,
+                        coverage_metrics['N_MANUFACTURERS_whole'] * 100,
+                        # coverage_metrics['male_mean_whole'] * 100,
+                        # coverage_metrics['female_mean_whole'] * 100,
+                        # coverage_metrics['eco_mean_whole'] * 100,
+                        # coverage_metrics['generic_mean_recs'] * 100,
+                        coverage_metrics['N_PRODUCTS_recs'] * 100,
+                        coverage_metrics['N_MANUFACTURERS_recs'] * 100,
+                        # coverage_metrics['female_mean_recs'] * 100,
+                        # coverage_metrics['eco_mean_recs'] * 100,
                     )
                 )
                 log.info(sentence)
@@ -401,7 +401,7 @@ def train(data, fixed_params, data_paths,
 
         del params['remove']
         # Save model if the recall is greater than 8%
-        if (recall > 0.08) & (fixed_params.item_id_type == 'SPECIFIC ITEM_IDENTIFIER') \
+        if (recall > 0.08) & (fixed_params.item_id_type == 'category') \
                 or (recall > 0.2) & (fixed_params.item_id_type == 'GENERAL ITEM_IDENTIFIER'):
             date = str(datetime.datetime.now())[:-10].replace(' ', '')
             torch.save(trained_model.state_dict(), f'models/HP_Recall_{recall * 100:.2f}_{date}.pth')

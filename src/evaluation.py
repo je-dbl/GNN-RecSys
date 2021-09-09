@@ -47,7 +47,7 @@ def fetch_recs_for_users(user,
             print(f'user = {user}; iid = {iid}')
 
         except Exception as e:
-            print(f'Error: {e}')
+            # print(f'Error: {e}')
             sentence = 'No name'
         # except:
         #     # print(f'user = {user}; iid = {iid}')
@@ -225,10 +225,10 @@ def check_coverage(user_item_interaction,
 
     recs_df['is_generic'] = (recs_df.is_junior + recs_df.is_male + recs_df.is_female).astype(bool) * -1 + 1
 
-    coverage_metrics['generic_mean_recs'] = recs_df.is_generic.mean()
-    coverage_metrics['junior_mean_recs'] = recs_df.is_junior.mean()
-    coverage_metrics['male_mean_recs'] = recs_df.is_male.mean()
-    coverage_metrics['female_mean_recs'] = recs_df.is_female.mean()
-    coverage_metrics['eco_mean_recs'] = recs_df.eco_design.mean()
+    # coverage_metrics['generic_mean_recs'] = recs_df.is_generic.mean()
+    coverage_metrics['N_PRODUCTS_recs'] = recs_df.N_PRODUCTS.mean()
+    coverage_metrics['N_MANUFACTURERS_recs'] = recs_df.N_MANUFACTURERS.mean()
+    # coverage_metrics['female_mean_recs'] = recs_df.is_female.mean()
+    # coverage_metrics['eco_mean_recs'] = recs_df.eco_design.mean()
 
     return coverage_metrics
