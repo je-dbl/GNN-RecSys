@@ -531,13 +531,13 @@ def fitness(**params):
               help='Continue with last trained model or not')
 @click.option('-v', '--verbose', count=True, help='Verbosity')
 @click.option('-viz', '--visualization', count=True, help='Visualize result')
-@click.option('--check_embedding', count=False, help='Explore embedding result')
+@click.option('--check_embedding', default=False, count=True, help='Explore embedding result')
 @click.option('--remove', default=.95, help='Data remove percentage')
 @click.option('--num_epochs', default=10, help='Number of epochs')
 @click.option('--start_epoch', default=0, help='Start epoch')
 @click.option('--patience', default=3, help='Patience for early stopping')
 @click.option('--edge_batch_size', default=2048, help='Number of edges in a train / validation batch')
-@click.option('--item_id_type', default='SPECIFIC ITEM IDENTIFIER',
+@click.option('--item_id_type', default='category',
               help='Identifier for the item. This code allows 2 types: SPECIFIC (e.g. item SKU'
                    'or GENERAL (e.g. item family)')
 @click.option('--duplicates', default='keep_all',
@@ -572,7 +572,7 @@ def main(from_beginning, verbose, visualization, check_embedding,
         'fixed_params': fixed_params,
         'data_paths': data_paths,
         'visualization': visualization,
-        'check_embedding': check_embedding,
+        'check_embedding': False,
     }
     if from_beginning:
         search_result = gp_minimize(
