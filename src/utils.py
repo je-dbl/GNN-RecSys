@@ -45,6 +45,8 @@ def read_data(file_path):
     elif file_path.endswith('.pkl'):
         with open(file_path, 'rb') as handle:
             obj = pickle.load(handle)
+    elif file_path.endswith('.parquet'):
+        obj = pd.read_parquet(file_path)
     else:
         raise KeyError('File extension of {} not recognized.'.format(file_path))
     return obj
