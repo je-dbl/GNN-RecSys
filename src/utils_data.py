@@ -95,7 +95,7 @@ class FixedParameters:
         self.reverse_etype = {('user', 'buys', 'item'): ('item', 'bought-by', 'user')}
         if self.discern_clicks:
             self.reverse_etype[('user', 'clicks', 'item')] = ('item', 'clicked-by', 'user')
-        self.run_inference = 1
+        self.run_inference = 0
         # self.spt_id_type = 'sport_id'
         self.start_epoch = start_epoch
         self.subtrain_size = 0.05
