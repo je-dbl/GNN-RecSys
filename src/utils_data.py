@@ -11,8 +11,8 @@ class DataPaths:
     def __init__(self):
         self.result_filepath = 'data/log_the_results.txt'
         #self.sport_feat_path = 'FEATURE DATASET, SPORTS (sport names) .csv'
-        self.train_path = 'data/user_item_interactions_train.parquet'
-        self.test_path = 'data/user_item_interactions_test.parquet'
+        self.train_path = 'data/user_item_interactions_train.csv'
+        self.test_path = 'data/user_item_interactions_test.csv'
         #self.item_sport_path = 'INTERACTION LIST, ITEM-SPORT .csv'
         #self.user_sport_path = 'INTERACTION LIST, USER-SPORT .csv'
         #self.sport_sportg_path = 'INTERACTION LIST, SPORT-SPORT .csv'
