@@ -105,6 +105,7 @@ def explore_recs(recs: dict,
                              item_id_type,
                              result_filepath,
                              ground_truth_purchase_dict)
+    print(len([uid for uid, v in already_bought_dict.items() if len(v) == 1 and uid in recs.keys()]))
 
     # user with 1 item
     choices = random.sample([uid for uid, v in already_bought_dict.items() if len(v) == 1 and uid in recs.keys()], 2)
