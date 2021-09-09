@@ -45,6 +45,7 @@ def fetch_recs_for_users(user,
                     count_purchases = len([item for item in ground_truth_purchase_dict[user] if item == iid])
                     sentence += f' ----- BOUGHT {count_purchases} TIME(S)'
         except:
+            print(f'user = {user}; iid = {iid}')
             sentence = 'No name'
         save_txt(sentence, result_filepath, mode='a')
 
