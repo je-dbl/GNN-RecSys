@@ -531,7 +531,7 @@ def fitness(**params):
               help='Continue with last trained model or not')
 @click.option('-v', '--verbose', count=True, help='Verbosity')
 @click.option('-viz', '--visualization', count=True, help='Visualize result')
-@click.option('--check_embedding', count=True, help='Explore embedding result')
+@click.option('--check_embedding', count=False, help='Explore embedding result')
 @click.option('--remove', default=.95, help='Data remove percentage')
 @click.option('--num_epochs', default=10, help='Number of epochs')
 @click.option('--start_epoch', default=0, help='Start epoch')

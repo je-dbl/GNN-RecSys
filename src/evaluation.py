@@ -223,7 +223,7 @@ def check_coverage(user_item_interaction,
                             how='left',
                             on='category')
 
-    recs_df['is_generic'] = (recs_df.is_junior + recs_df.is_male + recs_df.is_female).astype(bool) * -1 + 1
+    # recs_df['is_generic'] = (recs_df.is_junior + recs_df.is_male + recs_df.is_female).astype(bool) * -1 + 1
 
     # coverage_metrics['generic_mean_recs'] = recs_df.is_generic.mean()
     coverage_metrics['N_PRODUCTS_recs'] = recs_df.N_PRODUCTS.mean()
