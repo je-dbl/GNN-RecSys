@@ -483,22 +483,22 @@ class SearchableHyperparameters:
         Weight of the popularity score
     """
     def __init__(self):
-        self.aggregator_hetero = Categorical(categories=['mean', 'sum', 'max'], name='aggregator_hetero')
-        self.aggregator_type = Categorical(categories=['mean', 'mean_nn', 'pool_nn'], name='aggregator_type')  # LSTM?
-        self.clicks_sample = Categorical(categories=[.2, .3, .4], name='clicks_sample')
-        self.delta = Real(low=0.15, high=0.35, prior='log-uniform',
+        self.aggregator_hetero = Categorical(categories=['mean', 'sum'], name='aggregator_hetero')
+        self.aggregator_type = Categorical(categories=['mean', 'mean_nn'], name='aggregator_type')  # LSTM?
+        self.clicks_sample = Categorical(categories=[.2, .3], name='clicks_sample')
+        self.delta = Real(low=0.25, high=0.3, prior='log-uniform',
                           name='delta')
         self.dropout = Real(low=0., high=0.8, prior='uniform',
                             name='dropout')
-        self.embed_dim = Categorical(categories=['Very Small', 'Small', 'Medium', 'Large', 'Very Large'],
+        self.embed_dim = Categorical(categories=['Very Small', 'Medium'],
                                      name='embed_dim')
         self.embedding_layer = Categorical(categories=[True, False], name='embedding_layer')
         self.lr = Real(low=1e-4, high=1e-2, prior='log-uniform', name='lr')
-        self.n_layers = Integer(low=3, high=5, name='n_layers')
-        self.neg_sample_size = Integer(low=700, high=3000,
+        self.n_layers = Integer(low=3, high=4, name='n_layers')
+        self.neg_sample_size = Integer(low=2500, high=3000,
                                        name='neg_sample_size')
         self.norm = Categorical(categories=[True, False], name='norm')
-        self.popularity_importance = Categorical(categories=['No', 'Small', 'Medium', 'Large'],
+        self.popularity_importance = Categorical(categories=['No', 'Medium'],
                                                  name='popularity_importance')
         self.purchases_sample = Categorical(categories=[.4, .5, .6], name='purchases_sample')
         self.use_recency = Categorical(categories=[True, False], name='use_recency')
@@ -509,6 +509,32 @@ class SearchableHyperparameters:
                            for attr in dir(self) if '__' not in attr]
         self.default_parameters = ['sum', 'mean_nn', .3, 0.266, .5, 'Medium', False,
                                    0.00565, 3, 2500, True, 'No', .5, True]
+        # self.aggregator_hetero = Categorical(categories=['mean', 'sum', 'max'], name='aggregator_hetero')
+        # self.aggregator_type = Categorical(categories=['mean', 'mean_nn', 'pool_nn'], name='aggregator_type')  # LSTM?
+        # self.clicks_sample = Categorical(categories=[.2, .3, .4], name='clicks_sample')
+        # self.delta = Real(low=0.15, high=0.35, prior='log-uniform',
+        #                   name='delta')
+        # self.dropout = Real(low=0., high=0.8, prior='uniform',
+        #                     name='dropout')
+        # self.embed_dim = Categorical(categories=['Very Small', 'Small', 'Medium', 'Large', 'Very Large'],
+        #                              name='embed_dim')
+        # self.embedding_layer = Categorical(categories=[True, False], name='embedding_layer')
+        # self.lr = Real(low=1e-4, high=1e-2, prior='log-uniform', name='lr')
+        # self.n_layers = Integer(low=3, high=5, name='n_layers')
+        # self.neg_sample_size = Integer(low=700, high=3000,
+        #                                name='neg_sample_size')
+        # self.norm = Categorical(categories=[True, False], name='norm')
+        # self.popularity_importance = Categorical(categories=['No', 'Small', 'Medium', 'Large'],
+        #                                          name='popularity_importance')
+        # self.purchases_sample = Categorical(categories=[.4, .5, .6], name='purchases_sample')
+        # self.use_recency = Categorical(categories=[True, False], name='use_recency')
+        #
+        # # List all the attributes in a list.
+        # # This is equivalent to [self.hidden_dim_HP, self.out_dim_HP ...]
+        # self.dimensions = [self.__getattribute__(attr)
+        #                    for attr in dir(self) if '__' not in attr]
+        # self.default_parameters = ['sum', 'mean_nn', .3, 0.266, .5, 'Medium', False,
+        #                            0.00565, 3, 2500, True, 'No', .5, True]
 
 
 searchable_params = SearchableHyperparameters()
@@ -572,7 +598,7 @@ def main(from_beginning, verbose, visualization, check_embedding,
         'fixed_params': fixed_params,
         'data_paths': data_paths,
         'visualization': visualization,
-        'check_embedding': False,
+        'check_embedding': check_embedding,
     }
     if from_beginning:
         search_result = gp_minimize(
